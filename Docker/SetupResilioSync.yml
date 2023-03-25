@@ -1,0 +1,36 @@
+# Run with
+# ansible-playbook SetupResilioSync.yml
+# https://www.resilio.com/individuals/
+
+---
+- name: Setup Resilio-Sync
+  hosts: all 
+  tasks:
+
+  - name: Create directory for data
+    file:
+      path: "{{ item }}"
+      state: directory
+      owner: ajorians
+      group: users
+      mode: 0777
+    loop:
+      - /opt/resiliosync
+      - /opt/resiliosync/config
+      - /opt/resiliosync/downloads
+      - /mnt/external/sync
+      - /root/docker
+      - /root/docker/resiliosync
+
+  - name: Copy the docker-compose file with owner and permissions
+    ansible.builtin.copy:
+      src: docker-compose.yml
+      dest: /root/docker/resiliosync
+      owner: ajorians
+      group: users
+      mode: 0777
+
+  - name: Deploy Resilio-Sync from a compose file
+    docker_compose:
+      project_src: /root/docker/resiliosync
+

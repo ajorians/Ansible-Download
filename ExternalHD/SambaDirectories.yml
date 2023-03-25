@@ -1,0 +1,23 @@
+# Run with:
+# ansible-playbook SambaDirectories.yml
+
+---
+- name: Configure Samba Directories
+  hosts: all
+  tasks:
+
+  - name: Add AllWrite Share
+    ansible.builtin.lineinfile:
+      path: /etc/samba/smb.conf
+      line: "{{ item.line }}"
+    loop:
+      - { line: '[allwrite]' }
+      - { line: 'comment = Writeable area' }
+      - { line: 'path = /mnt/external/allwrite' }
+      - { line: 'guest ok = Yes' }
+      - { line: 'read only = No' }
+
+  - name: Start Samba service
+    ansible.builtin.systemd:
+      state: restarted
+      name: smb
