@@ -6,6 +6,12 @@
   hosts: all
   tasks:
 
+  - name: Put in ORIANS workgroup
+    replace:
+      path: /etc/samba/smb.conf
+      regexp: 'workgroup = WORKGROUP'
+      replace: 'workgroup = ORIANS'
+
   - name: Add AllWrite Share
     ansible.builtin.lineinfile:
       path: /etc/samba/smb.conf
