@@ -11,6 +11,11 @@
       name: apache2
       state: present
 
+  - name: Install Apache2 Utils package on OpenSUSE/SUSE Linux
+    zypper:
+      name: apache2-utils
+      state: present
+
   # Certbot wants this enabled
   - name: Enable the rewrite Apache2 module
     community.general.apache2_module:

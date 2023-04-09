@@ -24,3 +24,5 @@
 - import_playbook: ExternalHD/SambaDirectories.yml
 
 - import_playbook: Docker/SetupResilioSync.yml
+- import_playbook: Tasks/InstallApache2.yml
+- import_playbook: Tasks/SetupSyncApachePage.yml 
