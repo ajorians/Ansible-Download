@@ -13,15 +13,26 @@
       replace: 'workgroup = ORIANS'
 
   - name: Add AllWrite Share
-    ansible.builtin.lineinfile:
+    blockinfile:
       path: /etc/samba/smb.conf
-      line: "{{ item.line }}"
-    loop:
-      - { line: '[allwrite]' }
-      - { line: 'comment = Writeable area' }
-      - { line: 'path = /mnt/external/allwrite' }
-      - { line: 'guest ok = Yes' }
-      - { line: 'read only = No' }
+      marker: "# Allwrite {mark} Ansible Managed Block"
+      block: |
+        [allwrite]
+        comment = Writeable area
+        path = /mnt/external/allwrite
+        guest ok = Yes
+        read only = No
+
+  - name: Add Downloads Share
+    blockinfile:
+      path: /etc/samba/smb.conf
+      marker: "# ExtDownloads {mark} Ansible Managed Block"
+      block: |
+        [extdownloads]
+        comment = External hard drive downloads
+        path = /mnt/external/download_files
+        guest ok = Yes
+        read only = No
 
   - name: Start Samba service
     ansible.builtin.systemd:
